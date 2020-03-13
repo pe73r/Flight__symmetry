@@ -1,0 +1,126 @@
+{%- if collection -%}
+  {% capture product_url %}{{ product.url | within: collection }}{% endcapture %}
+{%- else -%}
+  {% capture product_url %}{{ product.url }}{% endcapture %}
+{%- endif -%}
+
+{%- if settings.prod_thumb_hover_image and product.media.size > 1 and settings.prod_hov_type != 'hover' -%}
+  {%- assign show_hover_image = true -%}
+{%- else -%}
+  {%- assign show_hover_image = false -%}
+{%- endif -%}
+
+{%- assign inv_mngmt_size = product.variants.first.inventory_management | size -%}
+{%- assign limit_as_int = settings.prod_stock_warn_limit_int | plus: 0 -%}
+
+<div data-product-id="{{ product.id }}" class="product-block detail-mode-{{ settings.prod_hov_type }} {% if settings.prod_thumb_variable_width %}variable-width{% else %}fixed-width{% endif %}">
+  {% if settings.swatch_enabled and settings.swatch_images == true %}
+  <style>
+    {%- for product_option in product.options_with_values -%}
+      {%- if product_option.name == settings.swatch_option_name -%}
+        {%- for value in product_option.values -%}
+          {%- assign swatch_value = value | handle -%}
+          .option--{{ settings.swatch_option_name | handle }} select[data-listed][data-colour-swatch="true"] + .clickyboxes .opt--{{ swatch_value }}::before,
+          .swatch-option__nugget.bg-{{ swatch_value }} {
+            background: #ddd url({{ swatch_value | append: '.png' | file_img_url: '48x48', crop: 'center' }}) center;
+          }
+        {%- endfor -%}
+      {%- endif -%}
+    {%- endfor -%}
+  </style>
+  {% endif %}
+  <div class="block-inner">
+    <div class="block-inner-inner">
+      <div class="image-cont {% if show_hover_image %}with-secondary-image {% if product.featured_media.preview_image.aspect_ratio == product.media[1].preview_image.aspect_ratio %}same-aspect-ratio{% endif %}{% endif %}">
+        <a class="product-link" href="{{ product_url }}">
+          <div class="image-label-wrap">
+            {%- if settings.prod_thumb_variable_width -%}
+            <style type="text/css">
+            .product-block[data-product-id="{{ product.id }}"] .block-inner .image-cont .rimage-outer-wrapper {
+              width: {{ product.featured_media.preview_image.aspect_ratio | times: settings.prod_thumb_height | floor }}px;
+            }
+            @media (max-width: 767px) {
+              .product-block[data-product-id="{{ product.id }}"] .block-inner .image-cont .rimage-outer-wrapper {
+                width: {{ product.featured_media.preview_image.aspect_ratio | times: 180 | floor }}px;
+              }
+            }
+            </style>
+            {%- endif -%}
+            <div class="primary-image">
+              {% include 'responsive-image', image: product.featured_media.preview_image, manual_image_load: manual_image_load %}
+            </div>
+            {% if show_hover_image %}
+              <div class="secondary-image lazyload{% if manual_image_load %}--manual{% endif %} rimage-background rimage-background--atop"
+                data-bgset="{% include 'bgset', image: product.media[1].preview_image %}"
+                data-sizes="auto"
+                data-parent-fit="contain"></div>
+            {% endif %}
+            {% include 'product-label' with product %}
+          </div>
+        </a>
+      </div>
+
+      <div class="product-info">
+        <div class="inner">
+          <div class="innerer">
+            <a class="product-link" href="{{ product_url }}">
+              {% if settings.prod_grid_show_vendor %}
+              <div class="vendor">{{ product.vendor }}</div>
+              {% endif %}
+              <div class="title">{{ product.title }}</div>
+              <div class="dash">-</div>
+
+              <span class="price">
+                {% if product.price_varies %}
+                <span class="from">{{ 'products.listing.from' | t }}</span>
+                {% endif %}
+                <span class="theme-money {% if product.compare_at_price > product.price %}on-sale{% endif %}">{{ product.price | money }}</span>
+              </span>
+              {% if product.compare_at_price_max > product.price %}
+              <div class="reducedfrom"><span class="amount theme-money">{{ product.compare_at_price_max | money }}</span></div>
+              {% endif %}
+
+              {%- assign variant = product.variants | sort: 'price' | first -%}
+              {%- if variant.unit_price_measurement -%}
+                {%- capture unit_price_base_unit -%}
+                  {%- if variant.unit_price_measurement.reference_value != 1 -%}
+                    {{- variant.unit_price_measurement.reference_value -}}
+                  {%- endif -%}
+                  {{ variant.unit_price_measurement.reference_unit }}
+                {%- endcapture -%}
+
+                <div class="unit-price">
+                  <span class="unit-price__price theme-money">{{ variant.unit_price | money }}</span>
+                  <span class="unit-price__separator">{{ 'products.variant.unit_price_separator' | t }}</span>
+                  <span class="unit-price__unit">{{ unit_price_base_unit }}</span>
+                </div>
+              {%- endif -%}
+
+              <span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-block-buttons">
+        <div class="lightly-spaced-row">
+          <a class="button altcolour" href="{{ product_url }}">Full details</a>
+        </div>
+        {% if settings.prod_thumb_detail_show %}
+          <div>
+            <a class="button product-link" href="{{ product_url }}">Quick buy</a>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  {%- if settings.prod_thumb_detail_show -%}
+    {%- unless no_quick_buy_markup -%}
+      <div class="quickbuy-container">
+        <a href="#" class="close-detail" aria-label="{{ 'products.quick_buy.close' | t }}" tabindex="-1">{% include 'svg-x' %}</a>
+        <div class="inner"></div>
+      </div>
+    {%- endunless -%}
+  {%- endif -%}
+</div>
