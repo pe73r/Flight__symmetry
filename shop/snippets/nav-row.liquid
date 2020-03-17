@@ -1,0 +1,43 @@
+<div class="nav-row" role="navigation" aria-label="{{ 'layout.footer.navigation_aria_label' | t | escape }}">
+    <div class="multi-level-nav">
+      <div class="tier-1">
+        <ul>
+          {% for link in linklists[section.settings.menu_linklist].links %}
+          <li {% if link.active %}class="active"{% endif %}>
+            <a href="{{ link.url }}" {% if link.links != blank %}class="has-children" aria-haspopup="true"{% endif %}>
+              {{ link.title }}
+              {% if link.links != blank %}
+              <span class="exp"><span>+</span>{% include 'icon-toggle-menu' %}</span>
+              {% endif %}
+            </a>
+
+            {% if link.links != blank %}
+            <ul>
+              {% for child_link in link.links %}
+              <li {% if child_link.active %}class="active"{% endif %}>
+                <a href="{{ child_link.url }}" class="{% if child_link.links != blank %}has-children {% if child_link.title contains 'LISTED' %}listing-title{% endif %}{% endif %}" {% if child_link.links != blank %}aria-haspopup="true"{% endif %}>
+                  {{ child_link.title | remove: ' LISTED' }}
+                  {% if child_link.links != blank %}
+                  <span class="exp"><span>+</span>{% include 'icon-toggle-menu' %}</span>
+                  {% endif %}
+                </a>
+
+                {% if child_link.links != blank %}
+                <ul{% if child_link.title contains 'LISTED' %} class="listed"{% endif %}>
+                  {% for child_child_link in child_link.links %}
+                  <li {% if child_child_link.active %}class="active"{% endif %}>
+                    <a href="{{ child_child_link.url }}">{{ child_child_link.title }}</a>
+                  </li>
+                  {% endfor %}
+                </ul>
+                {% endif %}
+              </li>
+              {% endfor %}
+            </ul>
+            {% endif %}
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div><!-- /.nav-row -->

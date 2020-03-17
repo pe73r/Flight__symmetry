@@ -1,0 +1,50 @@
+<section id="{{ block.id }}" class="section-pictos" title="pictos">
+    <div class="container-small {% if block.settings.container_type == 'padding-medium'%} padding-medium{% elsif block.settings.container_type == 'padding-large'%} padding-large {% else %} padding-small{% endif %}"> 
+     <div class="grid">
+        <div class="1/4--lap-and-up grid__cell align-center">
+          <div class="picto__image"> 
+               {% if block.settings.image != blank %}
+                <img src="{{ block.settings.image | img_url: 'master'}}" alt="">
+               {% else %}
+                <img src="{{ block.settings.picto-svg }}" alt="">
+               {% endif %}
+              </div>
+               <h6 class="picto__title">{{ block.settings.title }}</h6>
+            <div class="picto__content">{{ block.settings.content }}</div> 
+        </div>
+        <div class="1/4--lap-and-up grid__cell align-center">
+            <div class="picto__image"> 
+                 {% if block.settings.image-2 != blank %}
+                  <img src="{{ block.settings.image-2 | img_url: 'master'}}" alt="">
+                 {% else %}
+                  <img src="{{ block.settings.picto-svg-2 }}" alt="">
+                 {% endif %}
+                </div>
+                 <h6 class="picto__title">{{ block.settings.title-2 }}</h6>
+            <div class="picto__content">{{ block.settings.content-2 }}</div> 
+        </div>
+        <div class="1/4--lap-and-up grid__cell align-center">
+            <div class="picto__image"> 
+                 {% if block.settings.image-3 != blank %}
+                  <img src="{{ block.settings.image-3 | img_url: 'master'}}" alt="">
+                 {% else %}
+                  <img src="{{ block.settings.picto-svg-3 }}" alt="">
+                 {% endif %}
+                </div>
+                 <h6 class="picto__title">{{ block.settings.title-3 }}</h6>
+            <div class="picto__content">{{ block.settings.content-3 }}</div> 
+        </div>
+        <div class="1/4--lap-and-up grid__cell align-center">
+            <div class="picto__image"> 
+                 {% if block.settings.image-4 != blank %}
+                  <img src="{{ block.settings.image-4 | img_url: 'master'}}" alt="">
+                 {% else %}
+                  <img src="{{ block.settings.picto-svg-4 }}" alt="">
+                 {% endif %}
+                </div>
+                 <h6 class="picto__title">{{ block.settings.title-4 }}</h6>
+            <div class="picto__content">{{ block.settings.content-4 }}</div> 
+        </div>
+      </div>
+    </div>
+  </section>

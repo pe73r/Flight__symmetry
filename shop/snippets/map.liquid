@@ -1,0 +1,88 @@
+{% assign display_map = false %}
+{%- if block.settings.api_key != blank and block.settings.map_address -%}
+  {% assign display_map = true %}
+{%- endif -%}
+
+{% assign brightness = block.settings.color_bg | color_brightness %}
+{% assign alpha = block.settings.color_bg | color_extract: 'alpha' %}
+<style>
+  .section-id-{{ block.id }} {
+    background: {{ block.settings.color_bg }};
+  }
+  {% if brightness < 190 and alpha > 0 %}
+  .section-id-{{ block.id }},
+  .section-id-{{ block.id }} h2,
+  .section-id-{{ block.id }} a { 
+    color: #fff;
+  }
+  {% endif %}
+</style>
+
+<div class="section-id-{{ block.id }} map-section{% unless settings.use_fullwidth_layout %} map-section--map-constrained{% endunless %}{% if display_map %} map-section--display-map{% endif %}{% if block.settings.show_feature_image %} map-section--has-feature-image{% endif %}" data-section-type="map" data-api-key="{{ block.settings.api_key }}" data-map-style="{{ block.settings.map_style }}">
+  <div class="container">
+    <div class="map-section__wrapper">
+
+      <div class="map-section__content map-section__text">
+        {% if block.settings.heading != blank %}
+          <h2>{{ block.settings.heading | escape }}</h2>
+        {% endif %}
+        {% if block.settings.address != blank %}
+          <div class="rte">{{ block.settings.address }}</div>
+        {% endif %}
+        {% if block.settings.button != blank and block.settings.map_address != blank %}
+          <div>
+            <a href="https://maps.google.com?daddr={{ block.settings.map_address | escape }}" target="_blank" class="button altcolour">
+              {% if block.settings.show_pin %}
+                <span class="icon icon--large">{% include 'svg-pin' %}</span>
+              {% endif %}
+              <span>{{ block.settings.button | escape }}</span>
+            </a>
+          </div>
+        {% endif %}
+      </div>
+
+      {% if block.settings.show_feature_image %}
+        <div class="map-section__content map-section__feature">
+          {% if block.settings.feature_image %}
+            <div class="map-section__feature-image map-section__feature-image--{{ block.id }} lazyload"
+                data-bgset="{% include 'bgset', image: block.settings.feature_image %}"
+                data-sizes="auto"
+                data-parent-fit="cover">
+            </div>
+            <noscript>
+              <div class="map-section__feature-image map-section__feature-image--{{ block.id }}" style="background-image: url({{ block.settings.feature_image | img_url: '400x400'}});"></div>
+            </noscript>
+          {% else %}
+            <div class="map-section__feature-image placeholder-image">
+              {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+            </div>
+          {% endif %}
+        </div>
+      {% endif %}
+
+      <div class="map-section__content map-section__map">
+        {% if block.settings.background_image %}
+          <div class="map-section__map-image map-section__map-image--{{ block.id }} lazyload"
+              data-bgset="{% include 'bgset', image: block.settings.background_image %}"
+              data-sizes="auto"
+              data-parent-fit="cover">
+          </div>
+          <noscript>
+            <div class="map-section__map-image map-section__map-image--{{ block.id }}" style="background-image: url({{ block.settings.background_image | img_url: '400x400'}});"></div>
+          </noscript>
+        {% else %}
+          <div class="map-section__placeholder placeholder-image">
+            {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg' }}
+          </div>
+        {% endif %}
+        {% if display_map %}
+          <div class="map-section__map-container"
+              id="Map-{{ block.id }}"
+              data-address-setting="{{ block.settings.map_address | escape }}">
+          </div>
+        {% endif %}
+      </div>
+
+    </div>
+  </div>
+</div>

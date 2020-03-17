@@ -1,5 +1,5 @@
-<div class="container fully-spaced-row cf section-id-{{ section.id }}" data-section-type="custom-row">
-  <div class="flexible-layout valign-{{ section.settings.alignment }}">
+<div class="container fully-spaced-row cf section-id-{{ section.id }} {% if section.settings.container_type == 'padding-medium'%} padding-medium{% elsif section.settings.container_type == 'padding-large'%} padding-large {% else %} padding-small{% endif %}" data-section-type="custom-row">
+  <div class="flexible-layout valign-{{ section.settings.alignment }}"> 
     {% for block in section.blocks %}
 
     {% if block.type == 'image' %}
@@ -83,8 +83,29 @@
 {% schema %}
   {
     "name": "Custom content",
-    "max_blocks": 5,
+    "max_blocks": 5, 
     "settings": [
+    {
+      "type":      "select",
+      "id":        "container_type",
+      "label":     "Container type",
+       "options": [
+            {
+              "value": "padding-small",
+              "label": "padding-small"
+            },
+            {
+               "value": "padding-medium",
+               "label": "padding-medium"
+            }, 
+            {
+              "value": "padding-large",
+              "label": "padding-large"
+            } 
+          ],
+          "default":   "padding-small", 
+          "info":      "Spacing for the section"
+       },  
       {
         "type": "select",
         "id": "alignment",

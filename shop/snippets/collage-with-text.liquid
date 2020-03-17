@@ -1,0 +1,57 @@
+<div class="container layout-content-with-image-{{ block.settings.layout }} layout-content-with-image-mobile-{{ block.settings.layout_mobile }} layout-content-with-image--large-image valign-middle cf" data-section-type="collage-with-text">
+    {%- capture image_html -%}
+      <div class="collage-image-megasection image-cont micro-collage micro-collage--style-{{ block.settings.style }}">
+        {% if block.settings.cta_url != blank %}
+        <a href="{{ block.settings.cta_url }}" class="micro-collage__image-1-frame lazyload--placeholder" {% if block.settings.image_1.alt != blank %}aria-label="{{ block.settings.image_1.alt | escape }}"{% endif %}>
+        {% else %}
+        <div class="micro-collage__image-1-frame lazyload--placeholder">
+        {% endif %}
+  
+          {% if block.settings.image_1 == blank %}
+          <div class="placeholder-image">{{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}</div>
+          {% else %}
+            <div class="micro-collage__image fade-in lazyload"
+              data-bgset="{% include 'bgset', image: block.settings.image_1 %}"
+              data-sizes="auto"
+              data-parent-fit="cover"></div>
+          {% endif %}
+  
+        {% if block.settings.cta_url == blank %}
+        </div>
+        {% else %}
+        </a>
+        {% endif %}
+  
+        <div class="micro-collage__image-2-frame lazyload--placeholder">
+          {% if block.settings.image_2 == blank %}
+          <div class="placeholder-image">{{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}</div>
+          {% else %}
+            <div class="micro-collage__image fade-in lazyload"
+              data-bgset="{% include 'bgset', image: block.settings.image_2 %}"
+              data-sizes="auto"
+              data-parent-fit="cover"></div>
+          {% endif %}
+        </div>
+      </div>
+    {%- endcapture -%}
+  
+    {% if block.settings.layout == 'left' %}{{ image_html }}{% endif %}<div class="content collage-content-megasection">
+  
+    {% if block.settings.title != blank %}
+    <h1 class="majortitle in-content">{{ block.settings.title | escape }}</h1> 
+    {% endif %}
+  
+    <div class="user-content">{{ block.settings.text }}</div>
+  
+    {% if block.settings.cta_text != blank %}
+    <div class="spaced-row-above">
+      <a class="button altcolour" href="{{ block.settings.cta_url | default: '#' }}">{{ block.settings.cta_text | escape }}</a>
+    </div>
+    {% endif %}
+  
+    </div>{% if block.settings.layout == 'right' %}{{ image_html }}{% endif %}
+  </div>
+  
+  
+  
+  
