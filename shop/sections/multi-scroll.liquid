@@ -1,0 +1,247 @@
+{% assign header_height = "90px"%}
+
+<style>
+#section-{{ section.id }} .multi-scroll-panel__indicator {
+  top: calc((100vh - {{ header_height }}) / 2);
+}
+#section-{{ section.id }} .multi-scroll-panel__indicator.bottom {
+  bottom: calc((100vh - {{ header_height }}) / 2);
+  top:inherit;
+  transform: translateY(50%);
+}
+
+#section-{{ section.id }} .scroll-panel-content {
+  top: calc((100vh - {{ header_height }}) / 2);
+
+}
+#section-{{ section.id }} .scroll-panel-content.bottom {
+  bottom: calc((100vh - {{ header_height }}) / 2);
+  top:inherit;
+  transform: translateY(50%);
+}
+#section-{{ section.id }} .scroll-panel {
+  height:{{ section.settings.size }};
+}
+</style>
+
+<section class="section multi-scroll-panel" id="section-{{ section.id }}" data-section-id="{{ section.id }}" data-section-type="multi-scroll-panel">
+  <div class="multi-scroll-panel-sticky">
+    {% if section.settings.background != blank %}
+      <img class="multi-scroll-panel-sticky__image" src="{{ section.settings.background | img_url : 'master' }}" alt="{{ section.settings.background.alt }}">
+    {% endif %}
+  </div>
+  <div class="multi-scroll-panel-container">
+    <div class="multi-scroll-panel__indicator">
+      {% for block in section.blocks %}
+      {% unless forloop.last %}
+        <div href="scroll-panel-{{ forloop.index }}" class="scrollto u-h2 multi-scroll-panel__indicate" id="indicate-{{ forloop.index }}">
+          0{{ forloop.index }}
+        </div>
+        {% assign l = forloop.length | minus : 1 %}
+        {% unless forloop.index == l %}
+        <div class="u-h2 multi-scroll-panel__separator">-</div>
+        <div class="u-h2 multi-scroll-panel__separator">-</div>
+        <div class="u-h2 multi-scroll-panel__separator">-</div>
+        {% endunless %}
+      {% endunless %}
+      {% endfor %}
+    </div>
+    {% for block in section.blocks %}
+      <div class="color--dark scroll-panel {% if forloop.first %} active {% endif %}" id="scroll-panel-{{ forloop.index }}">
+        {% unless forloop.last %}
+        <div class="scroll-panel-content grid grid--middle">
+          <div class="grid__cell 1/1 7/12--desk grid--center">
+            <div class="scroll-panel__image-container">
+              <img class="scroll-panel__image" src="{{ block.settings.image | img_url : 'master' }}" alt="{{ block.settings.image.alt }}">
+
+            </div>
+          </div>
+          <div class="grid__cell 1/1 5/12--desk">
+            <h2 class="heading z-h2 scroll-panel__title">{{ block.settings.title }}</h2>
+            {{ block.settings.text }}
+            {% unless block.settings.cta == blank %}
+            <div class="scroll-panel__btn-content">
+              {% include 'arrow-button' with class:'secondary-title link--secondary', href:block.settings.url, text : block.settings.cta %}
+            </div>
+            {% endunless %}
+          </div>
+        </div>
+        {% endunless %}
+      </div>
+    {% endfor %}
+  </div>
+</section>
+
+<script> 
+
+  var header_height = $('#shopify-section-header').height() + $('#shopify-section-anchor-menu-concept').height();
+  var window_height = $(window).height();
+
+  var trig = header_height / window_height;
+  console.log("header-height : ", header_height);
+
+
+  // init controller
+  var controller = new ScrollMagic.Controller({
+    globalSceneOptions: {
+     
+    }
+  });
+
+
+  {% for block in section.blocks %}
+    var scene{{ forloop.index }} = new ScrollMagic.Scene({
+      triggerElement: "#scroll-panel-{{ forloop.index }}",
+      duration: $('#scroll-panel-{{ forloop.index }}').height()
+    })
+    .setClassToggle("#indicate-{{ forloop.index }}, #scroll-panel-{{ forloop.index }}", "active") // add class toggle
+    //.addIndicators() // add indicators (requires plugin)
+    .addTo(controller);
+ 
+    {% if forloop.first %}
+      scene{{ forloop.index }}.on("start", function (event) {
+        //console.log("Hit start point of scene.", event.scrollDirection);
+        if (event.scrollDirection == "FORWARD") {
+          $('#section-{{ section.id }} .multi-scroll-panel-sticky').addClass('active');
+          $('#section-{{ section.id }} .multi-scroll-panel__indicator').addClass('active');
+          $('#section-{{ section.id }} .scroll-panel-content').addClass('active');
+
+          $('#section-{{ section.id }} #scroll-panel-1').removeClass('active-ultra');
+        }
+        else {
+          $('#section-{{ section.id }} .multi-scroll-panel-sticky').removeClass('active');
+          $('#section-{{ section.id }} .multi-scroll-panel__indicator').removeClass('active');
+          $('#section-{{ section.id }} .scroll-panel-content').removeClass('active');
+
+          $('#section-{{ section.id }} #scroll-panel-1').addClass('active-ultra');
+        }
+      });
+    {% endif %}
+    {% if forloop.last %}
+    {% assign l = forloop.length | minus : 1 %}
+    scene{{ forloop.index }}.on("start", function (event) {
+      if (event.scrollDirection == "FORWARD") {
+        $('#scroll-panel-{{ l }}').addClass('active');
+        $('#indicate-{{ l }}').addClass('active');
+      }
+    })
+    {% endif %}
+  {% endfor %}
+
+
+
+
+
+  var controller_end = new ScrollMagic.Controller({
+    globalSceneOptions: {
+      triggerHook: 1
+    }
+  });
+  {% for block in section.blocks %}
+
+  {% if forloop.last %}
+    var scene_end = new ScrollMagic.Scene({
+      triggerElement: "#scroll-panel-{{ forloop.index }}",
+      duration: $('#scroll-panel-{{ forloop.index }}').height()
+    })
+    //      .addIndicators() // add indicators (requires plugin)
+          .addTo(controller_end);
+
+    scene_end.on("end", function (event) {
+      if (event.scrollDirection == "FORWARD") {
+        $('#section-{{ section.id }} .multi-scroll-panel-sticky').removeClass('active');
+        $('#section-{{ section.id }} .multi-scroll-panel-sticky').addClass('bottom');
+
+        $('#section-{{ section.id }} .multi-scroll-panel__indicator').removeClass('active');
+        $('#section-{{ section.id }} .multi-scroll-panel__indicator').addClass('bottom');
+
+        $('#section-{{ section.id }} .scroll-panel-content').removeClass('active');
+        $('#section-{{ section.id }} .scroll-panel-content').addClass('bottom');
+
+      }
+      else {
+        $('#section-{{ section.id }} .multi-scroll-panel-sticky').addClass('active');
+        $('#section-{{ section.id }} .multi-scroll-panel-sticky').removeClass('bottom');
+
+        $('#section-{{ section.id }} .multi-scroll-panel__indicator').addClass('active');
+        $('#section-{{ section.id }} .multi-scroll-panel__indicator').removeClass('bottom');
+
+        $('#section-{{ section.id }} .scroll-panel-content').addClass('active');
+        $('#section-{{ section.id }} .scroll-panel-content').removeClass('bottom');
+      }
+    });
+  {% endif %}
+  {% endfor %}
+
+  $('.scrollto').on('click', function() {
+    var id = $('#' + $(this).attr('href'));
+    var pos = $(id).offset().top;
+    $("html, body").animate({scrollTop : pos}, 200);
+  });
+
+</script>
+
+{% schema %}
+{
+  "name": "Multi scroll panel",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "background",
+      "label": "Background"
+    },
+    {
+      "type": "text",
+      "id": "size",
+      "label": "Hauteur de chaque slide",
+      "default": "500px",
+      "info": "Vous pouvez mettre différents type de taille comme : 100vh, 100px, 500pt, etc.. Ce n'est pas réelement la taille de la section mais la taille a effectuer en scroll pour passer d'une slide a une autre !"
+    },
+    {
+       "type": "paragraph",
+       "content": "Veillez a toujours laisser un block vide à la fin pour laisser un temps raisonnable sur la dernière slide !"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "panel",
+      "name": "Slide",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Titre",
+          "default": "Default Title"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Texte",
+          "default": "<p>Default subtitle</p>"
+        },
+	      {
+           "type":      "text",
+           "id":        "cta",
+           "label":     "Call to action"
+        },
+    	  {
+           "type":      "url",
+           "id":        "url",
+           "label":     "Url du cta"
+        }
+      ]
+    }
+  ],
+	"presets": [
+      {
+		    "name": "Multi Scroll Panel",
+        "category": "Multiscroll" 
+      }
+  ]
+}
+{% endschema %}

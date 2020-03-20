@@ -9,7 +9,9 @@
       {% else %}
         <input type="hidden" name="contact[tags]" value="prospect,newsletter"/>
         <span class="input-block">
-          <input type="email" placeholder="{{ 'layout.signup.email' | t }}" class="required" value="" name="contact[email]" aria-label="{{ 'layout.signup.label' | t | escape }}" /><button class="button compact" type="submit" aria-label="{{ 'layout.signup.submit' | t | escape }}"><span class="button__icon">{% include 'svg-chevron-right' %}</span></button>
+          <input type="email" placeholder="{{ 'layout.signup.email' | t }}" class="required" value="" name="contact[email]" aria-label="{{ 'layout.signup.label' | t | escape }}" />
+          <button class="button compact button-submit" type="submit" aria-label="{{ 'layout.signup.submit' | t | escape }}">
+            <span class="button__icon">{% include 'svg-chevron-right' %}</span></button>
         </span>
         {% if form.errors %}
           <div class="signup-form__response">
