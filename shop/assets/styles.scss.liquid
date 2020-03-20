@@ -9337,21 +9337,23 @@ $white : white;
 
 .toggle {
   font-family: arial, sans-serif;
+  background-color: #ededed;
 }
 .toggle .tabs {
   // border-bottom: 1px solid grey;
   width: 100%; 
   overflow: hidden;
-  height: 36px;
-  line-height: 36px;
+  padding: 0 10px;
+  background-color: white;
+
 }
+
 .toggle .tabs .tab {
   float: left;
   background: white;
   color: #777777;
-  height: 31px;
-  margin: 2px 8px 0;
-  padding: 0 8px;
+  margin: 0 10px;
+  padding: 10px 0;
   cursor: pointer;
 }
 .toggle .tabs .tab.active {
@@ -9359,7 +9361,7 @@ $white : white;
   border-bottom: 3px solid black;
 }
 .toggle .panels .panel {
-  padding: 20px 10px;
+  padding: 30px;
   display: none;
 }
 .toggle .panels .panel:first-child {

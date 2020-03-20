@@ -1,7 +1,8 @@
 {% if section.settings.display %}
 <section class="{% if section.settings.container_type == 'padding-medium'%} padding-medium{% elsif section.settings.container_type == 'padding-large'%} padding-large {% else %} padding-small{% endif %}">
     <div class="container-medium">
-    <div class='toggle'> 
+      {% assign productDescription = product.description | split:"<!-- split -->"%}
+      <div class='toggle'> 
         <div class='tabs'>
         {% for block in section.blocks %}
           <div class='tab {% if forloop.first %} active {% endif %}'>{{ block.settings.title }}</div>
@@ -9,23 +10,46 @@
         </div>
         <div class='panels'>
         {% for block in section.blocks %}
-        {% if block.type == 'text' %} 
-          <div class='panel'>{{ block.settings.content }}</div> 
-        {% elsif block.type == 'image' %}   
-           <div class='panel'>
-             <div class="grid">
-                {% if block.settings.image != blank %}
-                  <div class="1/4--lap-and-up grid__cell">
-                    <img src="{{ block.settings.image | img_url: 'master' }}" alt="{{ block.settings.image.alt }}" />
-                  </div>
-                {% endif %} 
-                {% if block.settings.image-2 != blank %}
-                  <div class="1/4--lap-and-up grid__cell">
-                    <img src="{{ block.settings.image-2 | img_url: 'master' }}" alt="{{ block.settings.image-2.alt }}" />
-                  </div>
-                {% endif %} 
-             </div>
+        {% if block.type == 'description' %} 
+          <div class='panel'>
+              <!-- {{ productDescription | first }} -->
+             {{ product.metafields.product.description_legende }}</p> 
           </div> 
+        {% elsif block.type == 'features' %}   
+           <div class='panel'>
+               <!-- {{ productDescription[1] }} -->
+              {{ product.metafields.product.description_avion }}
+           </div> 
+        {% elsif block.type == 'designer' %}    
+           <div class='panel'> 
+               <!-- {{ productDescription | last }} -->
+               <div class="grid">
+                 <div class="1/4--lap-and-up grid__cell">
+                    <img src="{{ product.metafields.product.image_1 }}" alt=""> 
+                 </div>  
+                 <div class="1/4--lap-and-up grid__cell">
+                    <img src="{{ product.metafields.product.image_2 }}" alt=""> 
+                 </div> 
+                 <div class="1/4--lap-and-up grid__cell">
+                    <img src="{{ product.metafields.product.image_3 }}" alt=""> 
+                 </div>
+                 <div class="1/4--lap-and-up grid__cell">
+                    <img src="{{ product.metafields.product.image_4 }}" alt=""> 
+                 </div>  
+                 <div class="1/4--lap-and-up grid__cell">
+                    <img src="{{ product.metafields.product.image_5 }}" alt=""> 
+                 </div> 
+                 <div class="1/4--lap-and-up grid__cell">
+                    <img src="{{ product.metafields.product.image_6 }}" alt=""> 
+                 </div>  
+                 <div class="1/4--lap-and-up grid__cell">
+                    <img src="{{ product.metafields.product.image_7 }}" alt=""> 
+                 </div>   
+                 <div class="1/4--lap-and-up grid__cell">
+                    <img src="{{ product.metafields.product.image_8 }}" alt=""> 
+                 </div>   
+              </div>
+            </div> 
         {% endif %}
         {% endfor %}
         </div>
@@ -79,6 +103,7 @@
 
 </script>
 
+
 {% endif %}
 
 {% schema %}
@@ -115,47 +140,57 @@
        ],
        "blocks": [
               {
-               "type": "text",
-               "name": "Text",
-               "limit": 2,
+               "type": "description",
+               "name": "Description",
+               "limit": 1,
                "settings": [
                     {
                         "type": "text",
                         "id": "title",
                         "label": "Title",
-                        "default": "Title"
+                        "default": "Description"
                     },
                     {
-                        "type": "textarea",
-                        "id": "content",
-                        "label": "content",
-                        "default": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</p>"               
-                    }
+                        "type":      "paragraph",
+                        "content":   "Content comes from first part of product description"
+                     }
                ]
              },
              {
-                "type": "image",
-                "name": "Image",
+                "type": "features",
+                "name": "Features", 
                 "limit": 1,
                 "settings": [
-                    {
-                        "type": "text",
-                        "id": "title",
-                        "label": "Title",
-                        "default": "Title"
-                    },
                      {
-                         "type": "image_picker",
-                         "id": "image",
-                         "label": "image"
+                         "type": "text",
+                         "id": "title",
+                         "label": "Title",
+                         "default": "Features" 
                      },
                      {
-                        "type": "image_picker",
-                        "id": "image-2",
-                        "label": "image 2"
-                    }
+                         "type":      "paragraph",
+                         "content":   "Content comes from second part of product description"
+                      } 
                 ]
-              }    
+              },   
+              {
+                "type": "designer",
+                "name": "Designer",
+                "limit": 1,
+                "settings": [
+                     {
+                         "type": "text",
+                         "id": "title",
+                         "label": "Title",
+                         "default": "Designer"
+                     }, 
+                     {
+                         "type":      "paragraph",
+                         "content":   "Content comes from second part of product description"
+                      }
+                ]
+              }
+              
        ]
      }
      {% endschema %}
