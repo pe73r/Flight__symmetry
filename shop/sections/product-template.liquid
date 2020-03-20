@@ -376,7 +376,7 @@
       {% endif %}
     </div>
 
-    {% if section.settings.prod_desc_pos == 'below' and in_lightbox == false %}
+    {% if section.settings.prod_desc_pos == 'below' and in_lightbox == false and section.settings.show-product-description == true %}
     <div class="description user-content padded-row">{{ product.description }}</div>
 
     {% comment %} Add code to show under the description on the line below this one, if full-width underneath the image {% endcomment %}
@@ -476,6 +476,16 @@
         "type": "checkbox",
         "id": "show_quantity_selector",
         "label": "Show quantity selector",
+        "default": true
+      },
+      {
+        "type": "header",
+        "content": "Description"
+      }, 
+      {
+        "type": "checkbox",
+        "id": "show-product-description",
+        "label": "Show product description",
         "default": true
       },
       {

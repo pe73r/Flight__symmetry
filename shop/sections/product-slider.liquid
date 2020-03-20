@@ -1,3 +1,4 @@
+{% if section.settings.display %}
 <div class="container container-product-slider layout-content-with-image-{{ section.settings.layout }} valign-{{ section.settings.alignment}} cf">
     {% if section.settings.layout == 'left' %} 
     <div class="image-cont product-slider-image">
@@ -24,10 +25,11 @@
         </div> 
         {% endif %} 
     </div>
+  
 
     {% if section.settings.layout == 'right' %}
     <div class="image-cont product-slider-image">
-        <div class="main-carousel" data-flickity='{ "cellAlign": "left", "contain": true }'>
+        <div class="main-carousel" data-flickity='{ "cellAlign": "left", "contain": true, "prevNextButtons": false }'>
             <div class="carousel-cell">
                 <img src="{{ section.settings.image | img_url: '800x' }}" alt="{{ section.settings.image.alt | escape }}" />
             </div>
@@ -38,12 +40,18 @@
     </div>
     {% endif %}
   </div>
-  
+  {% endif %} 
   
   {% schema %}
     {
-      "name": "Image with text",
+      "name": "Text with carousel", 
       "settings": [
+          {
+            "type": "checkbox",
+            "id": "display",
+            "label": "Display section ?",
+            "default": true
+        }, 
         {
           "type": "image_picker",
           "id": "image",

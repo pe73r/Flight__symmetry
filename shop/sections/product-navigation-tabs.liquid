@@ -1,0 +1,162 @@
+{% if section.settings.display %}
+<section class="{% if section.settings.container_type == 'padding-medium'%} padding-medium{% elsif section.settings.container_type == 'padding-large'%} padding-large {% else %} padding-small{% endif %}">
+    <div class="container-medium">
+    <div class='toggle'> 
+        <div class='tabs'>
+        {% for block in section.blocks %}
+          <div class='tab {% if forloop.first %} active {% endif %}'>{{ block.settings.title }}</div>
+        {% endfor %}
+        </div>
+        <div class='panels'>
+        {% for block in section.blocks %}
+        {% if block.type == 'text' %} 
+          <div class='panel'>{{ block.settings.content }}</div> 
+        {% elsif block.type == 'image' %}   
+           <div class='panel'>
+             <div class="grid">
+                {% if block.settings.image != blank %}
+                  <div class="1/4--lap-and-up grid__cell">
+                    <img src="{{ block.settings.image | img_url: 'master' }}" alt="{{ block.settings.image.alt }}" />
+                  </div>
+                {% endif %} 
+                {% if block.settings.image-2 != blank %}
+                  <div class="1/4--lap-and-up grid__cell">
+                    <img src="{{ block.settings.image-2 | img_url: 'master' }}" alt="{{ block.settings.image-2.alt }}" />
+                  </div>
+                {% endif %} 
+             </div>
+          </div> 
+        {% endif %}
+        {% endfor %}
+        </div>
+    </div> 
+  </div>
+</section>
+<script>
+
+(function() {
+  $(function() {
+    var toggle;
+    return toggle = new Toggle('.toggle');
+  });
+
+  this.Toggle = (function() {
+    Toggle.prototype.el = null;
+
+    Toggle.prototype.tabs = null;
+
+    Toggle.prototype.panels = null;
+
+    function Toggle(toggleClass) {
+      this.el = $(toggleClass);
+      this.tabs = this.el.find(".tab");
+      this.panels = this.el.find(".panel");
+      this.bind();
+    }
+
+    Toggle.prototype.show = function(index) {
+      var activePanel, activeTab;
+      this.tabs.removeClass('active');
+      activeTab = this.tabs.get(index);
+      $(activeTab).addClass('active');
+      this.panels.hide();
+      activePanel = this.panels.get(index);
+      return $(activePanel).show();
+    };
+
+    Toggle.prototype.bind = function() {
+      var _this = this;
+      return this.tabs.unbind('click').bind('click', function(e) {
+        return _this.show($(e.currentTarget).index());
+      });
+    };
+
+    return Toggle;
+
+  })();
+
+}).call(this);
+
+</script>
+
+{% endif %}
+
+{% schema %}
+     {
+       "name": "Product tabs",
+       "settings": [ 
+          {
+              "type": "checkbox",
+              "id": "display",
+              "label": "Display section ?",
+              "default": true
+          }, 
+          {
+           "type":      "select",
+           "id":        "container_type",
+           "label":     "Container type",
+            "options": [
+                 {
+                   "value": "padding-small",
+                   "label": "padding-small"
+                 },
+                 {
+                    "value": "padding-medium",
+                    "label": "padding-medium"
+                 }, 
+                 {
+                   "value": "padding-large",
+                   "label": "padding-large"
+                 } 
+               ],
+               "default":   "padding-small", 
+               "info":      "Spacing for the section"
+            } 
+       ],
+       "blocks": [
+              {
+               "type": "text",
+               "name": "Text",
+               "limit": 2,
+               "settings": [
+                    {
+                        "type": "text",
+                        "id": "title",
+                        "label": "Title",
+                        "default": "Title"
+                    },
+                    {
+                        "type": "textarea",
+                        "id": "content",
+                        "label": "content",
+                        "default": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</p>"               
+                    }
+               ]
+             },
+             {
+                "type": "image",
+                "name": "Image",
+                "limit": 1,
+                "settings": [
+                    {
+                        "type": "text",
+                        "id": "title",
+                        "label": "Title",
+                        "default": "Title"
+                    },
+                     {
+                         "type": "image_picker",
+                         "id": "image",
+                         "label": "image"
+                     },
+                     {
+                        "type": "image_picker",
+                        "id": "image-2",
+                        "label": "image 2"
+                    }
+                ]
+              }    
+       ]
+     }
+     {% endschema %}
+     
