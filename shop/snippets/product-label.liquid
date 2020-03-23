@@ -12,7 +12,7 @@
     {%- if settings.prod_sale_show and product.compare_at_price > product.price -%}
       <span class="productlabel sale"><span>{{ 'products.labels.sale' | t }}</span></span>
     {%- elsif settings.prod_stock_warn_show and product.variants.size == 1 and inv_mngmt_size > 0 and product.variants.first.inventory_quantity > 0 and product.variants.first.inventory_quantity <= limit_as_int -%}
-      <span class="productlabel general"><span>{{ 'products.labels.only_x_left' | t: quantity: product.variants.first.inventory_quantity }}</span></span>
+      <!-- <span class="productlabel general"><span>{{ 'products.labels.only_x_left' | t: quantity: product.variants.first.inventory_quantity }}</span></span> -->
     {%- else -%}
       {%- for tag in product.tags -%}
         {%- if tag contains 'meta-label-' -%}

@@ -1,0 +1,102 @@
+{% if section.settings.display %}
+<section class=" {% if section.settings.container_type == 'padding-medium'%} padding-medium{% elsif section.settings.container_type == 'padding-large'%} padding-large {% else %} padding-small{% endif %}">
+    <div class="container-medium">
+      <div class="multiscroll__flex">
+       <div class="slider slider-for"> 
+
+           <div class="relative">
+             <div class="multiscroll__content">
+                <div class="slide__counter">
+                  <span>1</span>             
+                  <p class="image-text__number-line"></p> 
+                </div> 
+               <h3>{{ product.title }}</h3>
+               {{ product.metafields.product.avion-description  }}
+               <div class="multiscroll-arrow">
+                <span>SCROLL DOWN</span>
+                {% include 'arrow-down' %}  
+              </div>
+             </div>
+           </div>
+           <div class="relative">
+            <div class="multiscroll__content">
+               <div class="slide__counter">
+                 <span>2</span>             
+                 <p class="image-text__number-line"></p> 
+               </div> 
+              <h3>Le procès</h3>
+              {{ product.metafields.product.process-description  }} 
+              <div class="multiscroll-arrow">
+                <span>SCROLL DOWN</span>
+                {% include 'arrow-down' %}  
+              </div>              
+            </div>
+          </div>
+          <div class="relative">
+            <div class="multiscroll__content">
+               <div class="slide__counter">
+                 <span>3</span>             
+                 <p class="image-text__number-line"></p> 
+               </div> 
+              <h3>Le design</h3> 
+              {{ product.metafields.product.designers-description }}  
+              <div class="multiscroll-arrow">               
+                {% include 'arrow-up' %}  
+                <span>SCROLL UP</span>
+                </div>              
+            </div>
+          </div>
+       </div>
+         <div class="slider slider-nav" dir="rtl">
+               <div class="bg" style="background-image: url('{{ product.metafields.product.avion }}');">
+                   <div class="multiscroll__image">                 
+                   </div> 
+               </div>
+               <div class="bg" style="background-image: url('{{ product.metafields.product.process }}');">
+                <div class="multiscroll__image">                 
+                </div> 
+              </div>
+              <div class="bg" style="background-image: url('{{ product.metafields.product.designers }}');">
+                <div class="multiscroll__image">                 
+                </div> 
+              </div>
+         </div>  
+       </div>    
+    </div> 
+   </section>
+   {% endif %}
+   {% schema %}
+     {
+       "name": "Slider multiscroll",
+       "settings": [ 
+          {
+              "type": "checkbox",
+              "id": "display",
+              "label": "Display section ?",
+              "default": true
+          }, 
+          {
+           "type":      "select",
+           "id":        "container_type",
+           "label":     "Container type",
+            "options": [
+                 {
+                   "value": "padding-small",
+                   "label": "padding-small"
+                 },
+                 {
+                    "value": "padding-medium",
+                    "label": "padding-medium"
+                 }, 
+                 {
+                   "value": "padding-large",
+                   "label": "padding-large"
+                 } 
+               ],
+               "default":   "padding-small", 
+               "info":      "Spacing for the section"
+            } 
+       ] 
+     }
+     {% endschema %}
+     

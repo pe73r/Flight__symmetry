@@ -13,41 +13,37 @@
         {% if block.type == 'description' %} 
           <div class='panel'>
               <!-- {{ productDescription | first }} -->
-             {{ product.metafields.product.description_legende }}</p> 
+              <div class="grid">
+                <div class="1/2--lap-and-up grid__cell">
+                  <img src="{{ product.metafields.product.image_legende }}" alt=""> 
+                </div> 
+                <div class="1/2--lap-and-up grid__cell">
+                  {{ product.metafields.product.description_legende }}
+                </div>
+              </div>            
           </div> 
         {% elsif block.type == 'features' %}   
            <div class='panel'>
                <!-- {{ productDescription[1] }} -->
-              {{ product.metafields.product.description_avion }}
+               <div class="grid">
+                 <div class="1/2--lap-and-up grid__cell">
+                  {{ product.metafields.product.description_avion }}
+                 </div>
+                 <div class="1/2--lap-and-up grid__cell">
+                  <img src="{{ product.metafields.product.image_avion }}" alt="">                  
+                 </div>
+               </div>   
            </div> 
         {% elsif block.type == 'designer' %}    
            <div class='panel'> 
                <!-- {{ productDescription | last }} -->
                <div class="grid">
-                 <div class="1/4--lap-and-up grid__cell">
-                    <img src="{{ product.metafields.product.image_1 }}" alt=""> 
+                 <div class="1/2--lap-and-up grid__cell">                   
+                  <img src="{{ product.metafields.product.image_designer }}" alt=""> 
                  </div>  
-                 <div class="1/4--lap-and-up grid__cell">
-                    <img src="{{ product.metafields.product.image_2 }}" alt=""> 
+                 <div class="1/2--lap-and-up grid__cell">
+                  {{ product.metafields.product.description_designer }}
                  </div> 
-                 <div class="1/4--lap-and-up grid__cell">
-                    <img src="{{ product.metafields.product.image_3 }}" alt=""> 
-                 </div>
-                 <div class="1/4--lap-and-up grid__cell">
-                    <img src="{{ product.metafields.product.image_4 }}" alt=""> 
-                 </div>  
-                 <div class="1/4--lap-and-up grid__cell">
-                    <img src="{{ product.metafields.product.image_5 }}" alt=""> 
-                 </div> 
-                 <div class="1/4--lap-and-up grid__cell">
-                    <img src="{{ product.metafields.product.image_6 }}" alt=""> 
-                 </div>  
-                 <div class="1/4--lap-and-up grid__cell">
-                    <img src="{{ product.metafields.product.image_7 }}" alt=""> 
-                 </div>   
-                 <div class="1/4--lap-and-up grid__cell">
-                    <img src="{{ product.metafields.product.image_8 }}" alt=""> 
-                 </div>   
               </div>
             </div> 
         {% endif %}
@@ -152,7 +148,7 @@
                     },
                     {
                         "type":      "paragraph",
-                        "content":   "Content comes from first part of product description"
+                        "content":   "Content comes from metafields legende"
                      }
                ]
              },
@@ -169,7 +165,7 @@
                      },
                      {
                          "type":      "paragraph",
-                         "content":   "Content comes from second part of product description"
+                         "content":   "Content comes from metafields avion"
                       } 
                 ]
               },   
@@ -186,7 +182,7 @@
                      }, 
                      {
                          "type":      "paragraph",
-                         "content":   "Content comes from second part of product description"
+                         "content":   "Content comes from metafields designer"
                       }
                 ]
               }

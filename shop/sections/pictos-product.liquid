@@ -1,0 +1,109 @@
+{% if section.settings.display %}
+<section id="{{ section.id }}" class="section-pictos" title="pictos">
+    <div class="container-small {% if section.settings.container_type == 'padding-medium'%} padding-medium{% elsif section.settings.container_type == 'padding-large'%} padding-large {% else %} padding-small{% endif %}"> 
+     <div class="grid">
+       {% for block in section.blocks %}
+           <div class="1/4--lap-and-up grid__cell align-center">
+              <div class="picto__image"> 
+               {% if section.settings.image != blank %}
+                <img src="{{ block.settings.image | img_url: 'master'}}" alt="">
+               {% else %}
+                <img src="{{ block.settings.picto-svg }}" alt="">
+               {% endif %}
+              </div>
+               <h6 class="picto__title">{{ block.settings.title }}</h6>
+               <div class="picto__content">{{ block.settings.content }}</div> 
+           </div>
+       {% endfor %}
+      </div>
+    </div> 
+  </section>
+  {% endif %}
+  
+  {% schema %}
+    {
+    "name": "Pictos", 
+    "settings": [ 
+      {
+          "type": "checkbox",
+          "id": "display",
+          "label": "Display section ?",
+          "default": true
+      },
+      {
+         "type":      "select",
+         "id":        "container_type",
+         "label":     "Container type",
+          "options": [
+               {
+                 "value": "padding-small",
+                 "label": "padding-small"
+               },
+               {
+                  "value": "padding-medium",
+                  "label": "padding-medium"
+               }, 
+               {
+                 "value": "padding-large",
+                 "label": "padding-large"
+               }
+             ],
+             "default":   "padding-large",
+             "info":      "Spacing for the section"
+          } 
+  
+    ],
+      "blocks": [
+        {
+          "type": "picto",
+          "name": "Picto",
+          "limit": 4,
+          "settings": [
+            {
+              "type": "image_picker",
+              "id": "image",
+              "label" : "image"
+            },
+            {
+                "type": "text",
+                "id": "picto-svg",
+                "label": "Picto in svg"
+            }, 
+            {
+                "type": "text",
+                "id": "title",
+                "label": "title",
+                "default": "Title"
+            },
+            {
+                "type": "richtext",
+                "id": "content",
+                "label": "content",
+                "default": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </p>"             
+            } 
+          ]
+        }
+      ],
+    "presets": [
+      {
+        "name": "Home Pictos",
+        "category": "Image",  
+        
+        "blocks": [
+          {
+            "type": "picto"
+          },
+          {
+            "type": "picto"
+          },
+          {
+            "type": "picto"
+          },
+          {
+            "type": "picto" 
+          }
+        ]
+      }
+    ]
+    }
+  {% endschema %}
