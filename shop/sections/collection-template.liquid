@@ -7,7 +7,7 @@
     <h1 class="majortitle">{{ collection.title | escape }}</h1>
     {% endif %}
 
-    {% if collection.description != blank %}
+    {% if collection.description != blank and section.settings.show-collection-description %}
     <div class="user-content lightly-spaced-row">
       {{ collection.description }}
     </div>
@@ -173,6 +173,12 @@
   {
     "name": "Collection pages",
     "settings": [
+      {
+        "type": "checkbox",
+        "id": "show-collection-description",
+        "label": "Show collection description",
+        "default": false
+      }, 
       {
         "type": "select",
         "id": "coll_desc_pos",

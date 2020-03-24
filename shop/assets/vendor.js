@@ -399,3 +399,5 @@ $('.slider-for').on('wheel', (function(e) {
    }
 
 }));
+
+

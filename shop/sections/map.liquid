@@ -19,7 +19,7 @@
 </style>
 
 <div class="section-id-{{ section.id }} map-section{% unless settings.use_fullwidth_layout %} map-section--map-constrained{% endunless %}{% if display_map %} map-section--display-map{% endif %}{% if section.settings.show_feature_image %} map-section--has-feature-image{% endif %}" data-section-type="map" data-api-key="{{ section.settings.api_key }}" data-map-style="{{ section.settings.map_style }}">
-  <div class="container">
+  <div class="container container-map"> 
     <div class="map-section__wrapper">
 
       <div class="map-section__content map-section__text">
