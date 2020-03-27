@@ -1,5 +1,5 @@
 {% if section.settings.display %}
-<section class="{% if section.settings.container_type == 'padding-medium'%} padding-medium{% elsif section.settings.container_type == 'padding-large'%} padding-large {% else %} padding-small{% endif %}">
+<section id="section-{{ section.id }}" class="{% if section.settings.container_type == 'padding-medium'%} padding-medium{% elsif section.settings.container_type == 'padding-large'%} padding-large {% else %} padding-small{% endif %}">
     <div class="container-medium">
       {% assign productDescription = product.description | split:"<!-- split -->"%}
       <div class='toggle'> 
@@ -15,10 +15,12 @@
               <!-- {{ productDescription | first }} -->
               <div class="grid">
                 <div class="1/2--lap-and-up grid__cell">
-                  <img src="{{ product.metafields.product.image_legende }}" alt=""> 
+                  <img src="{{ product.metafields.product.image_legende }}" alt="{{ product.metafields.product.image_legende.alt }}"> 
                 </div> 
                 <div class="1/2--lap-and-up grid__cell">
-                  {{ product.metafields.product.description_legende }}
+                  <div class="tabs__metafields-text">
+                    {{ product.metafields.product.description_legende }}
+                  </div>                
                 </div>
               </div>            
           </div> 
@@ -27,10 +29,12 @@
                <!-- {{ productDescription[1] }} -->
                <div class="grid">
                  <div class="1/2--lap-and-up grid__cell">
-                  {{ product.metafields.product.description_avion }}
+                   <div class="tabs__metafields-text">
+                    {{ product.metafields.product.description_avion }}
+                  </div>
                  </div>
                  <div class="1/2--lap-and-up grid__cell">
-                  <img src="{{ product.metafields.product.image_avion }}" alt="">                  
+                  <img src="{{ product.metafields.product.image_avion }}" alt="{{ product.metafields.product.image_avion.alt }}">                  
                  </div>
                </div>   
            </div> 
@@ -39,10 +43,12 @@
                <!-- {{ productDescription | last }} -->
                <div class="grid">
                  <div class="1/2--lap-and-up grid__cell">                   
-                  <img src="{{ product.metafields.product.image_designer }}" alt=""> 
+                  <img src="{{ product.metafields.product.image_designer }}" alt="{{ product.metafields.product.image_designer.alt }}"> 
                  </div>  
                  <div class="1/2--lap-and-up grid__cell">
-                  {{ product.metafields.product.description_designer }}
+                  <div class="tabs__metafields-text">
+                   {{ product.metafields.product.description_designer }}
+                  </div>  
                  </div> 
               </div>
             </div> 
@@ -52,6 +58,21 @@
     </div> 
   </div>
 </section>
+<style>
+   #section-{{ section.id }} .toggle .tabs .tab.active {
+      background-color: {{ section.settings.bg-color }};
+   }
+
+   #section-{{ section.id }} .toggle {
+      background-color: {{ section.settings.bg-color }};
+    }
+
+   #section-{{ section.id }} .toggle .tabs .tab,
+   #section-{{ section.id }} .tabs__metafields-text {    
+       color: {{ section.settings.color }}; 
+    }
+
+</style>
 <script>
 
 (function() {
@@ -132,7 +153,24 @@
                ],
                "default":   "padding-small", 
                "info":      "Spacing for the section"
-            } 
+            },
+            {
+              "type": "header",
+              "content": "Tab styles"  
+           }, 
+            {
+              "type": "color",
+              "id": "bg-color",
+              "label": "Tab color",
+              "default": "#ededed"   
+           },
+            {
+              "type": "color",
+              "id": "color",
+              "label": "Text color",
+              "default": "#777777"  
+           }  
+
        ],
        "blocks": [
               {
